@@ -219,16 +219,122 @@
       })
 
       .catch((error) => console.error("Error:", error));
+//   lineChart
 
+fetch("/lineChart/")
+
+.then((response) => response.json())
+
+.then((result_with_month_names) => {
+
+  var months = Object.keys(result_with_month_names);
+
+  var counts = Object.values(result_with_month_names);
+
+  var lineChart = document.getElementById("lineChart").getContext("2d");
+
+  new Chart(lineChart, {
+
+    type: "line",
+
+    data: {
+
+      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+
+      datasets: [
+
+        {
+
+          label: "Active Users",
+
+          borderColor: "#1d7af3",
+
+          pointBorderColor: "#FFF",
+
+          pointBackgroundColor: "#1d7af3",
+
+          pointBorderWidth: 2,
+
+          pointHoverRadius: 4,
+
+          pointHoverBorderWidth: 1,
+
+          pointRadius: 4,
+
+          backgroundColor: "transparent",
+
+          fill: true,
+
+          borderWidth: 2,
+
+          data: counts,
+
+        },
+
+      ],
+
+    },
+
+    options: {
+
+      responsive: true,
+
+      maintainAspectRatio: false,
+
+      legend: {
+
+        position: "bottom",
+
+        labels: {
+
+          padding: 10,
+
+          fontColor: "#1d7af3",
+
+        },
+
+      },
+
+      tooltips: {
+
+        bodySpacing: 4,
+
+        mode: "nearest",
+
+        intersect: 0,
+
+        position: "nearest",
+
+        xPadding: 10,
+
+        yPadding: 10,
+
+        caretPadding: 10,
+
+      },
+
+      layout: {
+
+        padding: { left: 15, right: 15, top: 15, bottom: 15 },
+
+      },
+
+    },
+
+  });
+
+})
+
+.catch((error) => console.error("Error:", error));
   }
 
   loadChartData();
 
 </script>
 <script>
-  var lineChart = document.getElementById("lineChart").getContext("2d"),
-    barChart = document.getElementById("barChart").getContext("2d"),
-    //pieChart = document.getElementById("pieChart").getContext("2d"),
+  //var lineChart = document.getElementById("lineChart").getContext("2d"),
+    var barChart = document.getElementById("barChart").getContext("2d"),
+  //pieChart = document.getElementById("pieChart").getContext("2d"),
     doughnutChart = document.getElementById("doughnutChart").getContext("2d"),
     radarChart = document.getElementById("radarChart").getContext("2d"),
     bubbleChart = document.getElementById("bubbleChart").getContext("2d"),
@@ -236,7 +342,7 @@
     multipleBarChart = document.getElementById("multipleBarChart").getContext("2d"),
     htmlLegendsChart = document.getElementById("htmlLegendsChart").getContext("2d");
 
-  var myLineChart = new Chart(lineChart, {
+  /* var myLineChart = new Chart(lineChart, {
     type: "line",
     data: {
       labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -280,7 +386,7 @@
         padding: { left: 15, right: 15, top: 15, bottom: 15 },
       },
     },
-  });
+  }); */
 
   var myBarChart = new Chart(barChart, {
     type: "bar",
