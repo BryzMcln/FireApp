@@ -219,113 +219,314 @@
       })
 
       .catch((error) => console.error("Error:", error));
-//   lineChart
+        //   lineChart
 
-fetch("/lineChart/")
+        fetch("/lineChart/")
 
-.then((response) => response.json())
+        .then((response) => response.json())
 
-.then((result_with_month_names) => {
+        .then((result_with_month_names) => {
 
-  var months = Object.keys(result_with_month_names);
+          var months = Object.keys(result_with_month_names);
 
-  var counts = Object.values(result_with_month_names);
+          var counts = Object.values(result_with_month_names);
 
-  var lineChart = document.getElementById("lineChart").getContext("2d");
+          var lineChart = document.getElementById("lineChart").getContext("2d");
 
-  new Chart(lineChart, {
+          new Chart(lineChart, {
 
-    type: "line",
+            type: "line",
 
-    data: {
+            data: {
 
-      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+              labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
 
-      datasets: [
+              datasets: [
 
-        {
+                {
 
-          label: "Active Users",
+                  label: "Active Users",
 
-          borderColor: "#1d7af3",
+                  borderColor: "#1d7af3",
 
-          pointBorderColor: "#FFF",
+                  pointBorderColor: "#FFF",
 
-          pointBackgroundColor: "#1d7af3",
+                  pointBackgroundColor: "#1d7af3",
 
-          pointBorderWidth: 2,
+                  pointBorderWidth: 2,
 
-          pointHoverRadius: 4,
+                  pointHoverRadius: 4,
 
-          pointHoverBorderWidth: 1,
+                  pointHoverBorderWidth: 1,
 
-          pointRadius: 4,
+                  pointRadius: 4,
 
-          backgroundColor: "transparent",
+                  backgroundColor: "transparent",
 
-          fill: true,
+                  fill: true,
 
-          borderWidth: 2,
+                  borderWidth: 2,
 
-          data: counts,
+                  data: counts,
 
-        },
+                },
 
-      ],
+              ],
 
-    },
+            },
 
-    options: {
+            options: {
 
-      responsive: true,
+              responsive: true,
 
-      maintainAspectRatio: false,
+              maintainAspectRatio: false,
 
-      legend: {
+              legend: {
 
-        position: "bottom",
+                position: "bottom",
 
-        labels: {
+                labels: {
 
-          padding: 10,
+                  padding: 10,
 
-          fontColor: "#1d7af3",
+                  fontColor: "#1d7af3",
 
-        },
+                },
 
-      },
+              },
 
-      tooltips: {
+              tooltips: {
 
-        bodySpacing: 4,
+                bodySpacing: 4,
 
-        mode: "nearest",
+                mode: "nearest",
 
-        intersect: 0,
+                intersect: 0,
 
-        position: "nearest",
+                position: "nearest",
 
-        xPadding: 10,
+                xPadding: 10,
 
-        yPadding: 10,
+                yPadding: 10,
 
-        caretPadding: 10,
+                caretPadding: 10,
 
-      },
+              },
 
-      layout: {
+              layout: {
 
-        padding: { left: 15, right: 15, top: 15, bottom: 15 },
+                padding: { left: 15, right: 15, top: 15, bottom: 15 },
 
-      },
+              },
 
-    },
+            },
 
-  });
+          });
 
-})
+        })
 
-.catch((error) => console.error("Error:", error));
+        .catch((error) => console.error("Error:", error));
+        //   multiLine
+
+        fetch("/multilineChart/")
+
+      .then((response) => response.json())
+
+      .then((result_with_month_names) => {
+
+        var countries = Object.keys(result_with_month_names);
+
+        // Extract incident counts for each country
+
+        var incidentCounts = [];
+
+        var incidentCounts2 = [];
+
+        var incidentCounts3 = [];
+
+        // Sort function to sort object keys by month
+
+        function sortObjectKeys(obj) {
+
+          return Object.keys(obj).sort((a, b) => parseInt(a) - parseInt(b));
+
+        }
+
+        // Check if data for each country exists and extract incident counts
+
+        if (countries.length >= 1) {
+
+          var country1_data = result_with_month_names[countries[0]];
+
+          var sortedKeys1 = sortObjectKeys(country1_data);
+
+          incidentCounts = sortedKeys1.map((key) => country1_data[key]);
+
+        }
+
+        if (countries.length >= 2) {
+
+          var country2_data = result_with_month_names[countries[1]];
+
+          var sortedKeys2 = sortObjectKeys(country2_data);
+
+          incidentCounts2 = sortedKeys2.map((key) => country2_data[key]);
+
+        }
+
+        if (countries.length >= 3) {
+
+          var country3_data = result_with_month_names[countries[2]];
+
+          var sortedKeys3 = sortObjectKeys(country3_data);
+
+          incidentCounts3 = sortedKeys3.map((key) => country3_data[key]);
+
+        }
+
+        var multipleLineChart = document.getElementById("multipleLineChart").getContext("2d");
+
+        new Chart(multipleLineChart, {
+
+          type: "line",
+
+          data: {
+
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+
+            datasets: [
+
+              {
+
+                label: countries[0],
+
+                borderColor: "#1d7af3",
+
+                pointBorderColor: "#FFF",
+
+                pointBackgroundColor: "#1d7af3",
+
+                pointBorderWidth: 2,
+
+                pointHoverRadius: 4,
+
+                pointHoverBorderWidth: 1,
+
+                pointRadius: 4,
+
+                backgroundColor: "transparent",
+
+                fill: true,
+
+                borderWidth: 2,
+
+                data: incidentCounts,
+
+              },
+
+              {
+
+                label: countries[1],
+
+                borderColor: "#59d05d",
+
+                pointBorderColor: "#FFF",
+
+                pointBackgroundColor: "#59d05d",
+
+                pointBorderWidth: 2,
+
+                pointHoverRadius: 4,
+
+                pointHoverBorderWidth: 1,
+
+                pointRadius: 4,
+
+                backgroundColor: "transparent",
+
+                fill: true,
+
+                borderWidth: 2,
+
+                data: incidentCounts2,
+
+              },
+
+              {
+
+                label: countries[2],
+
+                borderColor: "#f3545d",
+
+                pointBorderColor: "#FFF",
+
+                pointBackgroundColor: "#f3545d",
+
+                pointBorderWidth: 2,
+
+                pointHoverRadius: 4,
+
+                pointHoverBorderWidth: 1,
+
+                pointRadius: 4,
+
+                backgroundColor: "transparent",
+
+                fill: true,
+
+                borderWidth: 2,
+
+                data: incidentCounts3,
+
+              },
+
+            ],
+
+          },
+
+          options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            legend: {
+
+              position: "top",
+
+            },
+
+            tooltips: {
+
+              bodySpacing: 4,
+
+              mode: "nearest",
+
+              intersect: 0,
+
+              position: "nearest",
+
+              xPadding: 10,
+
+              yPadding: 10,
+
+              caretPadding: 10,
+
+            },
+
+            layout: {
+
+              padding: { left: 15, right: 15, top: 15, bottom: 15 },
+
+            },
+
+          },
+
+        });
+
+      })
+
+      .catch((error) => console.error("Error:", error));
   }
 
   loadChartData();
@@ -339,7 +540,7 @@ fetch("/lineChart/")
     radarChart = document.getElementById("radarChart").getContext("2d"),
     bubbleChart = document.getElementById("bubbleChart").getContext("2d"),
     multipleLineChart = document.getElementById("multipleLineChart").getContext("2d"),
-    multipleBarChart = document.getElementById("multipleBarChart").getContext("2d"),
+  //multipleBarChart = document.getElementById("multipleBarChart").getContext("2d"),
     htmlLegendsChart = document.getElementById("htmlLegendsChart").getContext("2d");
 
   /* var myLineChart = new Chart(lineChart, {
@@ -639,7 +840,7 @@ fetch("/lineChart/")
     },
   });
 
-  var myMultipleBarChart = new Chart(multipleBarChart, {
+  /* var myMultipleBarChart = new Chart(multipleBarChart, {
     type: "bar",
     data: {
       labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -692,7 +893,7 @@ fetch("/lineChart/")
         ],
       },
     },
-  });
+  }); */
 
   // Chart with HTML Legends
 

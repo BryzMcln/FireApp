@@ -60,3 +60,71 @@ def LineCountbyMonth(request):
     result_with_month_names = {
         month_names[int(month)]: count for month, count in result.items()}
     return JsonResponse(result_with_month_names)
+
+def MultilineIncidentTop3Country(request):
+
+    query = '''
+        SELECT 
+        fl.country,
+        strftime('%m', fi.date_time) AS month,
+        COUNT(fi.id) AS incident_count
+    FROM 
+        fire_incident fi
+    JOIN 
+        fire_locations fl ON fi.location_id = fl.id
+    WHERE 
+        fl.country IN (
+            SELECT 
+                fl_top.country
+            FROM 
+
+                fire_incident fi_top
+            JOIN 
+                fire_locations fl_top ON fi_top.location_id = fl_top.id
+            WHERE 
+                strftime('%Y', fi_top.date_time) = strftime('%Y', 'now')
+            GROUP BY 
+                fl_top.country
+            ORDER BY 
+                COUNT(fi_top.id) DESC
+            LIMIT 3
+        )
+        AND strftime('%Y', fi.date_time) = strftime('%Y', 'now')
+    GROUP BY 
+        fl.country, month
+    ORDER BY 
+        fl.country, month;
+    '''
+
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        rows = cursor.fetchall()
+
+    # Initialize a dictionary to store the result
+    result = {}
+
+    # Initialize a set of months from January to December
+    months = set(str(i).zfill(2) for i in range(1, 13))
+
+    # Loop through the query results
+    for row in rows:
+        country = row[0]
+        month = row[1]
+        total_incidents = row[2]
+
+        # If the country is not in the result dictionary, initialize it with all months set to zero
+        if country not in result:
+            result[country] = {month: 0 for month in months}
+
+        # Update the incident count for the corresponding month
+        result[country][month] = total_incidents
+
+    # Ensure there are always 3 countries in the result
+    while len(result) < 3:
+        # Placeholder name for missing countries
+        missing_country = f"Country {len(result) + 1}"
+        result[missing_country] = {month: 0 for month in months}
+
+    for country in result:
+        result[country] = dict(sorted(result[country].items()))
+    return JsonResponse(result)
