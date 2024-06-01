@@ -20,7 +20,7 @@
         <i class="flaticon-right-arrow"></i>
       </li>
       <li class="nav-item">
-        <a href="#">Stations</a>
+        <a href="#">Fire Incidents</a>
       </li>
     </ul>
   </div>
@@ -28,8 +28,17 @@
     <div class="col-md-12">
       <div class="card card-transparent">
         <div class="card-header">
-          <h4 class="card-title text-center">Fire Stations</h4>
+          <h4 class="card-title text-center">Fire Incidents</h4>
           <p class="card-category text-center">Looks great on any resolution. Made by our friends from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>.</p>
+          <div class="form-group">
+            <label for="citySelect">Select City:</label>
+            <select id="citySelect" class="form-control">
+              <option value="all">All</option>
+              {% for city in cities %}
+              <option value="{{ city }}">{{ city }}</option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
         <div class="card-body">
           <div class="col-md-10 ml-auto mr-auto">
@@ -43,47 +52,55 @@
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script>
   var map = L.map('map').setView([9.81644, 118.72239], 13);
-  var truckIcon = L.icon({
-  iconUrl: '../static/img/firetruck.png', 
-  iconSize: [50, 50], // Adjust the size as needed
+  var fireIcon = L.icon({
+    iconUrl: "{% static 'img/fire.png' %}", // Update this path to your fire icon
+    iconSize: [50, 50], // Adjust the size as needed
   });
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
-
-  // Create an array to hold all the markers
   var markers = [];
 
-  // Define the marker data
   var markerData = {{ fireStations|safe }};
 
-  // Loop through the marker data and create markers
-  markerData.forEach(function (data) {
-      var latitude = parseFloat(data.latitude);
-      var longitude = parseFloat(data.longitude);
+  function updateMarkers(city) {
+    markers.forEach(function(marker) {
+      map.removeLayer(marker);
+    });
+    markers = [];
 
-      var marker = L.marker([latitude, longitude], { icon: truckIcon }).addTo(map);
+    markerData.forEach(function (data) {
+      if (city === 'all' || data.city === city) {
+        var latitude = parseFloat(data.latitude);
+        var longitude = parseFloat(data.longitude);
 
-      // Create a popup and set its content
-      var popupContent = data.name;
-      var popup = L.popup().setContent(popupContent);
+        var marker = L.marker([latitude, longitude], { icon: fireIcon }).addTo(map);
 
-      marker.bindPopup(popupContent);
+        var popupContent = '<strong>' + data.name + '</strong><br>' + data.address + '<br>' + data.city;
+        var popup = L.popup().setContent(popupContent);
 
+        marker.bindPopup(popupContent);
 
-      // Bind mouseover and mouseout events to the marker
-      marker.on('mouseover', function (e) {
+        marker.on('mouseover', function (e) {
           this.openPopup();
-      });
+        });
 
-      marker.on('mouseout', function (e) {
+        marker.on('mouseout', function (e) {
           this.closePopup();
-      });
+        });
 
-      // Add the marker to the markers array
-      markers.push(marker);
+        markers.push(marker);
+      }
+    });
+  }
+
+  updateMarkers('all');
+
+  document.getElementById('citySelect').addEventListener('change', function() {
+    var selectedCity = this.value;
+    updateMarkers(selectedCity);
   });
 </script>
 {% endblock %}
