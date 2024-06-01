@@ -1,9 +1,11 @@
 from django.db import models
+
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
     class Meta:
         abstract = True
+
 class Locations(BaseModel):
     name = models.CharField(max_length=150)
     latitude = models.DecimalField(
@@ -29,6 +31,7 @@ class Incident(BaseModel):
 
     def __str__(self):
         return self.description
+    
 class FireStation(BaseModel):
     name = models.CharField(max_length=150)
     latitude = models.DecimalField(
