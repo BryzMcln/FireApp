@@ -527,6 +527,181 @@
       })
 
       .catch((error) => console.error("Error:", error));
+    //   multiBarChart
+
+    fetch("/multiBarChart/")
+
+      .then((response) => response.json())
+
+      .then((result) => {
+
+        var severitylevel = Object.keys(result);
+
+        // Extract incident counts for each country
+
+        var incidentCount_major = [];
+
+        var incidentCounts_minor = [];
+
+        var incidentCounts_moderate = [];
+
+        var months = Object.keys(result);
+
+        var counts = Object.values(result);
+
+        // Sort function to sort object keys by month
+
+        function sortObjectKeys(obj) {
+
+          return Object.keys(obj).sort((a, b) => parseInt(a) - parseInt(b));
+
+        }
+
+        // Check if data for each country exists and extract incident counts
+
+        if (severitylevel.length >= 1) {
+
+          var sl1_data = result[severitylevel[0]];
+
+          var sortedKeys1 = sortObjectKeys(sl1_data);
+
+          incidentCount_major = sortedKeys1.map((key) => sl1_data[key]);
+
+        }
+
+        if (severitylevel.length >= 2) {
+
+          var sl2_data = result[severitylevel[1]];
+
+          var sortedKeys2 = sortObjectKeys(sl2_data);
+
+          incidentCount_minor = sortedKeys2.map((key) => sl2_data[key]);
+
+        }
+
+        if (severitylevel.length >= 3) {
+
+          var sl3_data = result[severitylevel[2]];
+
+          var sortedKeys3 = sortObjectKeys(sl3_data);
+
+          incidentCount_moderate = sortedKeys3.map((key) => sl3_data[key]);
+
+        }
+
+        var multipleBarChart = document.getElementById("multipleBarChart").getContext("2d");
+
+        new Chart(multipleBarChart, {
+
+          type: "bar",
+
+          data: {
+
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+
+            datasets: [
+
+              {
+
+                label: "Minor Fire",
+
+                backgroundColor: "#59d05d",
+
+                borderColor: "#59d05d",
+
+                data: incidentCount_minor,
+
+              },
+
+              {
+
+                label: "Moderate Fire",
+
+                backgroundColor: "#fdaf4b",
+
+                borderColor: "#fdaf4b",
+
+                data: incidentCount_moderate,
+
+              },
+
+              {
+
+                label: "Major Fire",
+
+                backgroundColor: "#177dff",
+
+                borderColor: "#177dff",
+
+                data: incidentCount_major,
+
+              },
+
+            ],
+
+          },
+
+          options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            legend: {
+
+              position: "bottom",
+
+            },
+
+            title: {
+
+              display: true,
+
+              text: "Fire Incidents by Severity Level",
+
+            },
+
+            tooltips: {
+
+              mode: "index",
+
+              intersect: false,
+
+            },
+
+            responsive: true,
+
+            scales: {
+
+              xAxes: [
+
+                {
+
+                  stacked: true,
+
+                },
+
+              ],
+
+              yAxes: [
+
+                {
+
+                  stacked: true,
+
+                },
+
+              ],
+
+            },
+
+          },
+
+        });
+
+      })
+
+      .catch((error) => console.error("Error:", error));
   }
 
   loadChartData();
@@ -539,7 +714,7 @@
     doughnutChart = document.getElementById("doughnutChart").getContext("2d"),
     radarChart = document.getElementById("radarChart").getContext("2d"),
     bubbleChart = document.getElementById("bubbleChart").getContext("2d"),
-    multipleLineChart = document.getElementById("multipleLineChart").getContext("2d"),
+  //multipleLineChart = document.getElementById("multipleLineChart").getContext("2d"),
   //multipleBarChart = document.getElementById("multipleBarChart").getContext("2d"),
     htmlLegendsChart = document.getElementById("htmlLegendsChart").getContext("2d");
 
@@ -770,7 +945,7 @@
     },
   });
 
-  var myMultipleLineChart = new Chart(multipleLineChart, {
+  /* var myMultipleLineChart = new Chart(multipleLineChart, {
     type: "line",
     data: {
       labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -838,7 +1013,7 @@
         padding: { left: 15, right: 15, top: 15, bottom: 15 },
       },
     },
-  });
+  }); */
 
   /* var myMultipleBarChart = new Chart(multipleBarChart, {
     type: "bar",
