@@ -167,19 +167,18 @@ def multipleBarbySeverity(request):
     return JsonResponse(result)
 
 def map_station(request):
+     fireStations = FireStation.objects.values('name', 'latitude', 'longitude')
 
-     fireStations = FireStation.objects.values('name', 'latitude', 'longitude', 'city', 'address')
      for fs in fireStations:
          fs['latitude'] = float(fs['latitude'])
          fs['longitude'] = float(fs['longitude'])
 
      fireStations_list = list(fireStations)
-     cities = FireStation.objects.values_list('city', flat=True).distinct()
-
      context = {
+
          'fireStations': fireStations_list,
-         'cities': cities,
      }
+
      return render(request, 'map_station.html', context)
 
 class FireStationList(ListView):
