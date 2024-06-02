@@ -119,8 +119,23 @@
                       </a>
                     </li>
                     <li>
-                      <a href="#">
-                        <span class="sub-item">Dashboard 2</span>
+                      <a href="{% url 'incident-list' %}">
+                        <span class="sub-item">Fire Incidents</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'firefighter-list' %}">
+                        <span class="sub-item">Fire Fighters</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'firetruck-list' %}">
+                        <span class="sub-item">Fire Trucks</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{% url 'location-list' %}">
+                        <span class="sub-item">Locations</span>
                       </a>
                     </li>
                   </ul>
@@ -171,7 +186,7 @@
                       </a>
                     </li>
                     <li>
-                      <a href="{% url 'map-incident' %}">
+                      <a href="maps/jqvmap.html">
                         <span class="sub-item">Fire Incidents</span>
                       </a>
                     </li>
@@ -215,32 +230,12 @@
       <!-- End Sidebar -->
 
       <div class="main-panel">
-        <div class="content">
-          {% block content %}
-          {% endblock %}
-     
-          </div>
-        </div>
-        <footer class="footer">
-          <div class="container-fluid">
-            <nav class="pull-left">
-              <ul class="nav">
-                <li class="nav-item">
-                  <a class="nav-link" href="https://www.themekita.com"> ThemeKita </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"> Help </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"> Licenses </a>
-                </li>
-              </ul>
-            </nav>
-            <div class="copyright ml-auto">2018, made with <i class="fa fa-heart heart text-danger"></i> by <a href="https://www.themekita.com">ThemeKita</a></div>
-          </div>
-        </footer>
+        {% block content %}
+        {% endblock %}
       </div>
     </div>
+  </div>
+</div>
     <!--   Core JS Files   -->
     <script src="{% static 'js/core/jquery.3.2.1.min.js' %}"></script>
     <script src="{% static 'js/core/popper.min.js' %}"></script>

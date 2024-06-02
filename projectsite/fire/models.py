@@ -52,19 +52,19 @@ class Firefighters(BaseModel):
         ('Firefighter III', 'Firefighter III'),
         ('Driver', 'Driver'),
         ('Captain', 'Captain'),
-        ('Battalion Chief', 'Battalion Chief'),)
+        ('Battalion Chief', 'Battalion Chief'),
+    )
     name = models.CharField(max_length=150)
     rank = models.CharField(max_length=150)
-    experience_level = models.CharField(max_length=150)
-    station = models.CharField(
-        max_length=45, null=True, blank=True, choices=XP_CHOICES)
+    experience_level = models.CharField(max_length=45, choices=XP_CHOICES)  
+    station = models.ForeignKey(FireStation, on_delete=models.CASCADE)  
     
     def __str__(self):
         return self.name
 class FireTruck(BaseModel):
     truck_number = models.CharField(max_length=150)
     model = models.CharField(max_length=150)
-    capacity = models.CharField(max_length=150)  # water
+    capacity = models.CharField(max_length=150)
     station = models.ForeignKey(FireStation, on_delete=models.CASCADE)
 
     def __str__(self):
