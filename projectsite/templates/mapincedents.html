@@ -1,5 +1,4 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
-
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
 <div class="page-inner">
@@ -21,7 +20,7 @@
         <i class="flaticon-right-arrow"></i>
       </li>
       <li class="nav-item">
-        <a href="#">Fire Stations</a>
+        <a href="#">Incidents</a>
       </li>
     </ul>
   </div>
@@ -29,12 +28,15 @@
     <div class="col-md-12">
       <div class="card card-transparent">
         <div class="card-header">
-          <h4 class="card-title text-center">Fire Stations</h4>
-          <p class="card-category text-center">Looks great on any resolution. Made by our friends from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>.</p>
+          <h4 class="card-title text-center">Fire Incidents</h4>
+          <p class="card-category text-center">Displays fire incidents with their locations. Made by our friends from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>.</p>
           <div class="form-group">
             <label for="citySelect">Select City:</label>
             <select id="citySelect" class="form-control custom-dropdown">
               <option value="all">All</option>
+              {% for city in cities %}
+              <option value="{{ city }}">{{ city }}</option>
+              {% endfor %}
             </select>
           </div>
         </div>
@@ -51,7 +53,7 @@
 <script>
   var map = L.map('map').setView([9.81644, 118.72239], 13);
   var fireIcon = L.icon({
-    iconUrl: "{% static 'img/firetruck.png' %}", // Update this path to your fire icon
+    iconUrl: "{% static 'img/fire-truck-3.png' %}", // Update this path to your fire icon
     iconSize: [50, 50], // Adjust the size as needed
   });
 
@@ -61,23 +63,7 @@
 
   var markers = [];
 
-  var markerData = {{ fireStations|safe }};
-  var cityData = {};
-
-  // Extract city data from markerData
-  markerData.forEach(function(data) {
-    if (!cityData[data.city]) {
-      cityData[data.city] = {
-        latitude: parseFloat(data.latitude),
-        longitude: parseFloat(data.longitude)
-      };
-      // Add city to dropdown
-      var option = document.createElement("option");
-      option.value = data.city;
-      option.textContent = data.city;
-      document.getElementById('citySelect').appendChild(option);
-    }
-  });
+  var markerData = {{ incidentData|safe }};
 
   function updateMarkers(city) {
     markers.forEach(function(marker) {
@@ -85,30 +71,27 @@
     });
     markers = [];
 
-    if (city !== 'all') {
-      var cityCenter = cityData[city];
-      map.setView([cityCenter.latitude, cityCenter.longitude], 13);
-    } else {
-      map.setView([9.81644, 118.72239], 13);
-    }
-
-    markerData.forEach(function(data) {
+    markerData.forEach(function (data) {
       if (city === 'all' || data.city === city) {
         var latitude = parseFloat(data.latitude);
         var longitude = parseFloat(data.longitude);
 
         var marker = L.marker([latitude, longitude], { icon: fireIcon }).addTo(map);
 
-        var popupContent = '<strong>' + data.name + '</strong><br>' + data.address + '<br>' + data.city;
+        var popupContent = '<strong>' + data.description + '</strong><br>' +
+                           'Severity: ' + data.severity_level + '<br>' +
+                           'Date/Time: ' + data.date_time + '<br>' +
+                           data.address + '<br>' +
+                           data.city;
         var popup = L.popup().setContent(popupContent);
 
         marker.bindPopup(popupContent);
 
-        marker.on('mouseover', function(e) {
+        marker.on('mouseover', function (e) {
           this.openPopup();
         });
 
-        marker.on('mouseout', function(e) {
+        marker.on('mouseout', function (e) {
           this.closePopup();
         });
 
@@ -126,8 +109,8 @@
 </script>
 <style>
   .custom-dropdown {
-    width: 150px; /* Adjust the width as needed */
-    padding: 5px; /* Adjust the padding as needed */
+    width: 150px; 
+    padding: 5px; 
   }
 </style>
 {% endblock %}

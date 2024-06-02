@@ -12,6 +12,7 @@ urlpatterns = [
     path('multilineChart/', MultilineIncidentTop3Country, name='chart'),
     path('multiBarChart/', multipleBarbySeverity, name='chart'),
     path('stations', views.map_station, name='map-station'),
+    path('incidents', views.map_incident, name='map-incident'),
     path('firestationlist', FireStationList.as_view(), name='firestation-list'),
     path('firestation/add', FireStationCreateView.as_view(), name='firestation-add'),
     path('firestationlist/<pk>', FireStationUpdateView.as_view(), name='firestation-update'),
