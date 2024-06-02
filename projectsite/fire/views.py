@@ -301,7 +301,7 @@ class IncidentDeleteView(DeleteView):
 class LocationList(ListView):
     model = Locations
     context_object_name = 'locations'
-    template_name = "locationlist.html"
+    template_name = "listloc.html"
     paginate_by = 5
 
     def get_queryset(self, *args, **kwargs):
@@ -315,25 +315,25 @@ class LocationList(ListView):
 class LocationCreateView(CreateView):
     model = Locations
     form_class = LocationForm
-    template_name = "location_add.html"
+    template_name = "addloc.html"
     success_url = reverse_lazy('location-list')
 
 class LocationUpdateView(UpdateView):
     model = Locations
     form_class = LocationForm
-    template_name = "location_edit.html"
+    template_name = "editloc.html"
     success_url = reverse_lazy('location-list')
 
 class LocationDeleteView(DeleteView):
     model = Locations
-    template_name = 'location_del.html'
+    template_name = 'delloc.html'
     success_url = reverse_lazy('location-list')
 
 
 class FireTruckList(ListView):
     model = FireTruck
     context_object_name = 'firetruck'
-    template_name = "firetrucklist.html"
+    template_name = "listtruck.html"
     paginate_by = 5
 
     def get_queryset(self, *args, **kwargs):
@@ -347,16 +347,16 @@ class FireTruckList(ListView):
 class FireTruckCreateView(CreateView):
     model = FireTruck
     form_class = FireTruckForm
-    template_name = "firetruck_add.html"
+    template_name = "addtruck.html"
     success_url = reverse_lazy('firetruck-list')
 
 class FireTruckUpdateView(UpdateView):
     model = FireTruck
     form_class = FireTruckForm
-    template_name = "firetruck_edit.html"
+    template_name = "edittruck.html"
     success_url = reverse_lazy('firetruck-list')
 
 class FireTruckDeleteView(DeleteView):
     model = FireTruck
-    template_name = 'firetruck_del.html'
+    template_name = 'deltruck.html'
     success_url = reverse_lazy('firetruck-list')

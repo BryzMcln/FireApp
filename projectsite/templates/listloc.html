@@ -1,0 +1,75 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">Home</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">List of Location</div>
+                        <div class="card-category">FireApp Locations</div>
+                    </div>
+                    <br>
+                        <div class="col-md-12 row">
+                            <div class="col-md-6">
+                                <form action="" class="navbar-left navbar-form nav-search mr-md-3" action="{% url 'location-list' %}">
+                                    <div class="input-group">
+                                        <input type="text" placeholder="Search ..." class="form-control" name="q">
+                                        <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="la la-search search-icon"></i>
+                                        </span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="pull-right">
+                                    <a href="{% url 'location-add' %}" class="btn btn-success btn-rounded">Add Location</a>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="card-body">
+                        <table class="table table-striped mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Latitude</th>
+                                    <th scope="col">Longitude</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">City</th>
+                                    <th scope="col">Country</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for object in object_list %}
+                                <tr>
+                                    <td>{{ object.name }}</td>
+                                    <td>{{ object.latitude }}</td>
+                                    <td>{{ object.longitude }}</td>
+                                    <td>{{ object.address }}</td>
+                                    <td>{{ object.city }}</td>
+                                    <td>{{ object.country }}</td>
+                                    <td>
+                                        <a href="locationlist/{{ object.id }}">Edit</a>
+                                        <a href="locationlist/{{ object.id }}/delete" class="text-danger">Delete</a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" style="text-align: center">
+                                    <p class="text-sm font-weight-bold mb-0">No Records Found</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% include 'includes/pagination.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
