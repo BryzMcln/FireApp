@@ -37,7 +37,7 @@
                                     <th scope="col">Rank</th>
                                     <th scope="col">Experience Level</th>
                                     <th scope="col">Station</th>
-                                    <th scope="col">Action</th>
+                                    <th scope="col" colspan="2">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,10 +47,8 @@
                                     <td>{{ object.rank }}</td>
                                     <td>{{ object.experience_level }}</td>
                                     <td>{{ object.station }}</td>
-                                    <td>
-                                        <a href="firefighterlist/{{ object.id }}">Edit</a>
-                                        <a href="firefighterlist/{{ object.id }}/delete" class="text-danger">Delete</a>
-                                    </td>
+                                    <td><a href="firefighterlist/{{ object.id }}">Edit</a></td>
+                                    <td><a href="firefighterlist/{{ object.id }}/delete" class="text-danger">Delete</a></td>
                                 </tr>
                                 {% empty %}
                                 <tr>
