@@ -38,7 +38,7 @@
                                     <th scope="col">Humidity</th>
                                     <th scope="col">Wind Speed</th>
                                     <th scope="col">Weather Description</th>
-                                    <th scope="col">Action</th>
+                                    <th scope="col" colspan="2">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -49,10 +49,8 @@
                                     <td>{{ object.humidity }}</td>
                                     <td>{{ object.wind_speed }}</td>
                                     <td>{{ object.weather_description }}</td>
-                                    <td>
-                                        <a href="weatherconditionlist/{{ object.id }}">Edit</a>
-                                        <a href="weatherconditionlist/{{ object.id }}/delete" class="text-danger">Delete</a>
-                                    </td>
+                                    <td><a href="weatherconditionlist/{{ object.id }}">Edit</a></td>
+                                    <td><a href="weatherconditionlist/{{ object.id }}/delete" class="text-danger">Delete</a></td>
                                 </tr>
                                 {% empty %}
                                 <tr>
