@@ -70,6 +70,7 @@ class FirefightersForm(ModelForm):
             'station': 'Station',
         }
 
+
 class WeatherConditionForm(ModelForm):
     class Meta:
         model = WeatherConditions

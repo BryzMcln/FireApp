@@ -239,7 +239,7 @@ class FireStationDeleteView(DeleteView):
 class FireFighterList(ListView):
     model = Firefighters
     context_object_name = 'firefighters'
-    template_name = "listfirefighters.html"
+    template_name = "listfight.html"
     paginate_by = 5
 
     def get_queryset(self, *args, **kwargs):
@@ -253,18 +253,18 @@ class FireFighterList(ListView):
 class FireFighterCreateView(CreateView):
     model = Firefighters
     form_class = FirefightersForm
-    template_name = "addfirefighter.html"
+    template_name = "addfight.html"
     success_url = reverse_lazy('firefighter-add')
 
 class FireFighterUpdateView(UpdateView):
     model = Firefighters
     form_class = FirefightersForm
-    template_name = "editfirefighter.html"
+    template_name = "editfight.html"
     success_url = reverse_lazy('firefighter-update')
 
 class FireFighterDeleteView(DeleteView):
     model = Firefighters
-    template_name = 'delfirefighter.html'
+    template_name = 'delfight.html'
     success_url = reverse_lazy('firefighter-delete')
 
 class IncidentList(ListView):
